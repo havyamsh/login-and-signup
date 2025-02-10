@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Login & Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Prevents scrollbars */
+        }
+
+        .c-bg {
+            position: relative;
+            width: 100vw; /* Full width of the viewport */
+            height: 100vh; /* Full height of the viewport */
+        }
+
+        .c-bg img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Scale the image to the width of the container */
+            height: 100%; /* Scale the image to the height of the container */
+            object-fit: cover; /* Ensures the image covers the area without distortion */
+        }
+
+        @keyframes animcolor {
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .c-bg img {
+            filter: hue-rotate(0deg);
+            animation: animcolor 5s linear infinite;
+        }
+    </style>
+</head>
+<body>
+<div class="c-bg">
+    <img src="3d-rendering-hexagonal-texture-background.jpg" alt="Christmas Background">
+
+ <div class="wrapper" style="justify-content: center; width: 1840px;">
+    <nav class="nav" >
+        
+        <div class="nav-menu" id="navMenu" style="justify-content: left; width: 1000px;">
+            <ul style="justify-content: left;">
+                <li><a href="dist/christmas.html" class="link">CHRISTMAS</a></li>
+                <li><a href="Happy-New-Year-Countdown-main/index.html" class="link">HAPPY NEW YEAR</a></li>
+                
+
+            </ul>
+        </div>
+        <div class="nav-button"  >
+            <button class="btn white-btn" id="loginBtn" onclick="login()">Sign In</button>
+            <button class="btn" id="registerBtn" onclick="register()">Sign Up</button>
+        </div>
+        <div class="nav-menu-btn">
+            <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+        </div>
+    </nav>
+
+    <!----------------------------- Form box ----------------------------------->
+
+    <div class="form-box" style="width: 550px; height: 100vh; justify-content: left;">
+        <div class="register-container" id="register">
+            <div class="top">
+                <span>Have an account? <a href="#" onclick="login()">Login</a></span>
+                <header>Sign Up</header>
+            </div>
+            <div class="two-forms">
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Firstname" name="firstname" id="firstname">
+                    <i class="bx bx-user"></i>
+                </div>
+                <div class="input-box">
+                    <input type="text" class="input-field" placeholder="Lastname" name="lastname" id="lastname">
+                    <i class="bx bx-user"></i>
+                </div>
+            </div>
+            <div class="input-box">
+                <input type="text" class="input-field" placeholder="Email" name="email" id="email">
+                <i class="bx bx-envelope"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" class="input-field" placeholder="Password" id="password" name="password" oninput="validatePassword()">
+                <i class="bx bx-lock-alt"></i>
+            </div>
+            <!-- New Fields -->
+            <div class="input-box">
+                <input type="text" class="input-field" placeholder="Phone Number" name="phone" id="phone">
+                <i class="bx bx-phone"></i>
+            </div>
+            <div class="input-box">
+                <input type="text" class="input-field" placeholder="Address" name="address" id="address">
+                <i class="bx bx-map"></i>
+            </div>
+            <div class="input-box">
+                <input type="date" class="input-field" placeholder="Date of Birth" name="dob" id="dob">
+                <i class="bx bx-calendar"></i>
+            </div>
+            <div class="input-box">
+                <select class="input-field" name="gender" id="gender" style="color: rgb(255, 255, 255);">
+                    <option value="" disabled selected style="color: black;">Gender</option>
+                    <option value="male" style="color: black;">Male</option>
+                    <option value="female" style="color: black;">Female</option>
+                    <option value="other" style="color: black;">Other</option>
+                </select>
+                <i class="bx bx-gender"></i>
+            </div>
+            <div class="input-box">
+                <button type="button" class="submit" id="registerSubmit" onclick="submitForm()">Register</button>
+            </div>
+            <div id="password-error" style="color: red; display: none;">
+                Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character.
+            </div>
+        </div>
+
+        <!------------------- login form -------------------------->
+
+        <div class="login-container" id="login">
+            <div class="top">
+                <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
+                <header>Login</header>
+            </div>
+            <div class="input-box">
+                <input type="text" class="input-field" placeholder="Username or Email" name="email" id="login-email">
+                <i class="bx bx-user"></i>
+            </div>
+            <div class="input-box">
+                <input type="password" class="input-field" placeholder="Password" name="password" id="login-password">
+                <i class="bx bx-lock-alt"></i>
+            </div>
+            <div class="input-box">
+                <input type="button" class="submit" value="Sign In" onclick="handleLogin()">
+            </div>
+            
+        </div>
+    </div>
+</div>   
+</div>
+
+<script>
+    var x = document.getElementById("login");
+    var y = document.getElementById("register");
+
+    var a = document.getElementById("loginBtn");
+    var b = document.getElementById("registerBtn");
+
+    // Ensure that the register form is visible by default
+    window.onload = function() {
+        register(); // Calls the register function on page load
+    };
+
+    function login() {
+        x.style.left = "4px";
+        y.style.right = "-520px";
+        a.className += " white-btn";
+        b.className = "btn";
+        x.style.opacity = 1;
+        y.style.opacity = 0;
+    }
+
+    function register() {
+        x.style.left = "-510px";
+        y.style.right = "5px";
+        a.className = "btn";
+        b.className += " white-btn";
+        x.style.opacity = 0;
+        y.style.opacity = 1;
+    }
+
+    // Password validation function
+    function validatePassword() {
+        var password = document.getElementById('password').value;
+        var passwordError = document.getElementById('password-error');
+        var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        // Check if password meets the criteria
+        if (!passwordRegex.test(password)) {
+            passwordError.style.display = 'block'; // Show error message
+            return false; // Prevent form submission
+        } else {
+            passwordError.style.display = 'none'; // Hide error message
+            return true; // Allow form submission
+        }
+    }
+
+    // Submit form on Register button click
+    function submitForm() {
+        // Validate password first
+        if (!validatePassword()) {
+            return; // Don't submit if password validation fails
+        }
+
+        // Gather form data
+        var formData = new FormData();
+        formData.append('firstname', document.getElementById('firstname').value);
+        formData.append('lastname', document.getElementById('lastname').value);
+        formData.append('email', document.getElementById('email').value);
+        formData.append('password', document.getElementById('password').value);
+        formData.append('phone', document.getElementById('phone').value);
+        formData.append('address', document.getElementById('address').value);
+        formData.append('dob', document.getElementById('dob').value);
+        formData.append('gender', document.getElementById('gender').value);
+
+        // Send the form data to the PHP backend
+        fetch('register.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Registration Successful!');
+                window.location.href = 'login.html'; // Redirect to login page
+            } else {
+                alert('Registration Failed: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error with the registration process.');
+        });
+    }
+    
+
+    // Handle login logic
+    function handleLogin() {
+    var email = document.getElementById('login-email').value;
+    var password = document.getElementById('login-password').value;
+
+    // Prepare the form data to send to the server
+    var formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+
+    // Send the login data to the backend (replace 'login.php' with your actual PHP login handler)
+    fetch('login.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Redirect to landing page on successful login
+            window.location.href = 'landing_page.php?email=' + encodeURIComponent(email);
+        } else {
+            alert('Invalid email or password');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error with the login process.');
+    });
+}
+
+</script>
+
+</body>
+</html>
